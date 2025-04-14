@@ -23,6 +23,7 @@ const ContentText = styled.Text`
 const LastEditedAtText = styled.Text`
   color: ${colors.gray};
   text-align: right;
+  text-shadow: 0px 0px 1px ${colors.white};
 `;
 
 const NoteItem = ({

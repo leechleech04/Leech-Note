@@ -3,11 +3,12 @@ import colors from '../colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import NoteItem from './NoteItem';
+import { FlatList } from 'react-native';
 
 const Container = styled.View`
   flex: 1;
   background-color: ${colors.black};
-  padding: 0 5px;
+  padding: 50px 5px;
 `;
 
 interface NoteType {
@@ -30,9 +31,7 @@ const List = () => {
       const noteKey = `note_${Date.now()}`;
       await AsyncStorage.setItem(noteKey, JSON.stringify(note));
     };
-    setNote()
-      .then(() => console.log('Note set successfully'))
-      .catch((error) => console.error('Error setting note:', error));
+    setNote();
   }, []);
 
   useEffect(() => {
@@ -55,14 +54,18 @@ const List = () => {
 
   return (
     <Container>
-      {allNotes.map((note, index) => (
-        <NoteItem
-          key={index}
-          title={note.title}
-          content={note.content}
-          lastEditedAt={note.lastEditedAt}
-        />
-      ))}
+      <FlatList
+        data={allNotes}
+        renderItem={({ item: { title, content, lastEditedAt } }) => {
+          return (
+            <NoteItem
+              title={title}
+              content={content}
+              lastEditedAt={lastEditedAt}
+            />
+          );
+        }}
+      />
     </Container>
   );
 };
